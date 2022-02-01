@@ -1,0 +1,346 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:6073697048856194484",
+      "lastPropertyId": "4:4438262399966765982",
+      "name": "BusArrival",
+      "properties": [
+        {
+          "id": "1:6332372085699103056",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3014836112821719069",
+          "name": "busArrivalKey",
+          "indexId": "1:8842138999728915806",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:1173506259365332858",
+          "name": "busServiceId",
+          "indexId": "2:6086425683386868832",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusService"
+        },
+        {
+          "id": "4:4438262399966765982",
+          "name": "busStopId",
+          "indexId": "3:8264528868377337080",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusStop"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:6787365883860233869",
+      "lastPropertyId": "12:7694108580184572805",
+      "name": "BusRoute",
+      "properties": [
+        {
+          "id": "1:5110715497707641586",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8537655942606764029",
+          "name": "key",
+          "indexId": "4:7872079768786476739",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:596845562515477030",
+          "name": "busServiceId",
+          "indexId": "5:1694829365756858058",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusService"
+        },
+        {
+          "id": "4:2224454569562791816",
+          "name": "stopSequence",
+          "type": 6
+        },
+        {
+          "id": "5:4728224658711243530",
+          "name": "busStopId",
+          "indexId": "6:3227414074019231749",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusStop"
+        },
+        {
+          "id": "6:612480397727785308",
+          "name": "distance",
+          "type": 8
+        },
+        {
+          "id": "7:6433222154243785562",
+          "name": "weekdayFirstBusTime",
+          "type": 9
+        },
+        {
+          "id": "8:8721164024146335982",
+          "name": "weekdayLastBusTime",
+          "type": 9
+        },
+        {
+          "id": "9:960954894563105794",
+          "name": "saturdayFirstBusTime",
+          "type": 9
+        },
+        {
+          "id": "10:2880302915728503841",
+          "name": "saturdayLastBusTime",
+          "type": 9
+        },
+        {
+          "id": "11:5406708691593096081",
+          "name": "sundayFirstBusTime",
+          "type": 9
+        },
+        {
+          "id": "12:7694108580184572805",
+          "name": "sundayLastBusTime",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:6618404301655088578",
+      "lastPropertyId": "12:2983960515156372784",
+      "name": "BusService",
+      "properties": [
+        {
+          "id": "1:8644901560077544930",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6385492357485412855",
+          "name": "serviceNo",
+          "indexId": "7:6019680303342531760",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:5142826181459336113",
+          "name": "operator",
+          "type": 9
+        },
+        {
+          "id": "4:8919602535250209151",
+          "name": "direction",
+          "type": 5
+        },
+        {
+          "id": "5:3066648659451162788",
+          "name": "category",
+          "type": 9
+        },
+        {
+          "id": "6:8929150873591042113",
+          "name": "originBusStopId",
+          "indexId": "8:1234742398501651395",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusStop"
+        },
+        {
+          "id": "7:5510863819666933728",
+          "name": "destinationBusStopId",
+          "indexId": "9:726432973317442170",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusStop"
+        },
+        {
+          "id": "8:3105401457704985070",
+          "name": "amPeakFrequency",
+          "type": 9
+        },
+        {
+          "id": "9:2307618415213205931",
+          "name": "amOffPeakFrequency",
+          "type": 9
+        },
+        {
+          "id": "10:1324865231566367665",
+          "name": "pmPeakFrequency",
+          "type": 9
+        },
+        {
+          "id": "11:5842622260727629270",
+          "name": "pmOffPeakFrequency",
+          "type": 9
+        },
+        {
+          "id": "12:2983960515156372784",
+          "name": "loopLocationDesc",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:6543555446140920547",
+      "lastPropertyId": "6:7651224365854239380",
+      "name": "BusStop",
+      "properties": [
+        {
+          "id": "1:4164185175192607583",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6256756009017194014",
+          "name": "busStopCode",
+          "indexId": "10:417029251858510196",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:7431412073229489153",
+          "name": "roadName",
+          "type": 9
+        },
+        {
+          "id": "4:1331326445335516993",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "5:5123349092859738507",
+          "name": "latitude",
+          "type": 9
+        },
+        {
+          "id": "6:7651224365854239380",
+          "name": "longitude",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:837191576679873084",
+      "lastPropertyId": "15:5243493782051033959",
+      "name": "NextBus",
+      "properties": [
+        {
+          "id": "1:1015750068541395183",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1620942145314130793",
+          "name": "busServiceId",
+          "indexId": "14:6132793687002240504",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusService"
+        },
+        {
+          "id": "3:3911271581631136051",
+          "name": "busStopId",
+          "indexId": "15:6262737931969973901",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusStop"
+        },
+        {
+          "id": "5:1727148582952881477",
+          "name": "originBusStopId",
+          "type": 6
+        },
+        {
+          "id": "6:6640536593595457813",
+          "name": "destinationBusStopId",
+          "type": 6
+        },
+        {
+          "id": "7:4668531484370192620",
+          "name": "estimatedArrivalDateTime",
+          "type": 9
+        },
+        {
+          "id": "8:7046833815886108157",
+          "name": "currentLatitude",
+          "type": 9
+        },
+        {
+          "id": "9:8977516500757862503",
+          "name": "currentLongitude",
+          "type": 9
+        },
+        {
+          "id": "10:5455646088452991831",
+          "name": "visitTimes",
+          "type": 5
+        },
+        {
+          "id": "11:1306289051346864959",
+          "name": "busLoad",
+          "type": 9
+        },
+        {
+          "id": "12:7198807020864597967",
+          "name": "isAccessible",
+          "type": 1
+        },
+        {
+          "id": "13:2971207915365415101",
+          "name": "busType",
+          "type": 9
+        },
+        {
+          "id": "14:8042452703479305102",
+          "name": "createdDateTime",
+          "type": 9
+        },
+        {
+          "id": "15:5243493782051033959",
+          "name": "busArrivalId",
+          "indexId": "16:1953861961638366452",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusArrival"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "5:837191576679873084",
+  "lastIndexId": "16:1953861961638366452",
+  "lastRelationId": "1:7948311397531062256",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [
+    8481404797857221457,
+    3180058331417011231,
+    2914674828390187384
+  ],
+  "retiredPropertyUids": [
+    3187326067392186228
+  ],
+  "retiredRelationUids": [
+    7948311397531062256
+  ],
+  "version": 1
+}

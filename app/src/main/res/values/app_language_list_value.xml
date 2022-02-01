@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="app_language_list_value">
+        <item>sys</item>
+        <item>en-SG</item>
+        <item>zh-SG</item>
+    </string-array>
+</resources>

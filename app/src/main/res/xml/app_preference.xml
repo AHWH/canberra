@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:key="customisation_category"
+        app:title="@string/preference_category_customisation">
+
+        <ListPreference
+            app:key="customisation_language"
+            app:title="@string/preference_customisation_language_title"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="1"
+            app:entries="@array/app_language_list_key"
+            app:entryValues="@array/app_language_list_value" />
+
+        <Preference
+            app:key="customisation_app_theme"
+            app:title="App Theme"
+            app:summary="Select between light, dark or system"/>
+
+        <Preference
+            app:key="customisation_app_theme_colour"
+            app:title="App Theme Colour"
+            app:summary="Select App Theme's colour"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="location_category"
+        app:title="@string/preference_category_location">
+
+        <Preference
+            app:key="location_settings"
+            app:title="@string/preference_location_settings_title"
+            app:summary="@string/preference_location_settings_summary"/>
+
+        <SwitchPreference
+            app:key="location_access"
+            app:title="@string/preference_location_access_title"
+            app:summary="@string/preference_location_access_summary"
+            app:defaultValue="false"
+            app:selectable="false"/>
+
+        <SwitchPreference
+            app:key="location_precise"
+            app:title="@string/preference_location_precision_title"
+            app:summary="@string/preference_location_precision_summary"
+            app:defaultValue="false"
+            app:selectable="false"
+            app:dependency="location_access"/>
+    </PreferenceCategory>
+
+    <Preference
+        app:key="feedback"
+        app:title="Send feedback"
+        app:summary="Report technical issues or suggest new features"/>
+
+    <SwitchPreference
+        app:key="first_run"
+        app:title="First Run"
+        app:summary="First Run"
+        app:isPreferenceVisible="false"
+        app:defaultValue="true"
+        app:selectable="false"/>
+</PreferenceScreen>
