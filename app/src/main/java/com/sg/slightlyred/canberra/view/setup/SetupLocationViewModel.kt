@@ -10,8 +10,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SetupLocationViewModel @Inject constructor(private val appPreferencesRepository: AppPreferencesRepository) : ViewModel() {
-    private val TAG: String = SetupLanguageViewModel::class.java.name
-
     fun updateLocationAccessPreference(value: Boolean) {
         viewModelScope.launch {
             appPreferencesRepository.insertPreferenceBooleanValue(AppPreferenceConstants.KEY_LOCATION_ACCESS, value)

@@ -77,7 +77,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     // 3rd Parties Dependencies
-    implementation 'com.mapbox.maps:android:10.1.0'
+    implementation 'com.mapbox.maps:android:10.2.0'
     implementation "com.squareup.moshi:moshi:1.13.0"
     implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
@@ -85,6 +85,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation 'com.github.grumlimited:geocalc:0.6'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

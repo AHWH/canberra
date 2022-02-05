@@ -13,13 +13,10 @@ object DataAccessStrategy {
         saveCallResult: (suspend (T) -> Unit)? = null
     ): Flow<ResponseState<T>> {
         if (databaseQuery == null) {
-            Log.i("DataAccessStrategy", "Finding Get methods 1")
             return performGetRemoteOnly(callState!!, saveCallResult!!)
         } else if (callState == null) {
-            Log.i("DataAccessStrategy", "Finding Get methods 2")
             return performGetDatabaseOnly(databaseQuery)
         } else {
-            Log.i("DataAccessStrategy", "Finding Get methods 3")
             return performGetDefault(databaseQuery, callState, saveCallResult!!)
         }
     }
@@ -70,4 +67,22 @@ object DataAccessStrategy {
         val dbSource: T = databaseQuery.invoke()
         emit(ResponseState.Success(dbSource))
     }
+
+    fun <T> performGetRemoteAndSaveOnly(
+        callState: suspend () -> ResponseState<T>,
+        saveCallResult: suspend (T) -> Boolean
+    ): Flow<ResponseState<Boolean>> = flow {
+        emit(ResponseState.Loading())
+        when (val responseStatus = callState.invoke()) {
+            is ResponseState.Success -> {
+                if (saveCallResult(responseStatus.data!!)) {
+                    emit(ResponseState.Success(true))
+                } else {
+                    emit(ResponseState.Error(false, ""))
+                }
+            }
+            is ResponseState.Error -> { emit(ResponseState.Error(null, responseStatus.message!!)) }
+            else -> {}
+        }
+    }.flowOn(Dispatchers.IO)
 }

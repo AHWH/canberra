@@ -50,9 +50,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        TabLayoutMediator(viewBinding.homeBottomSheet.homeTabLayout, viewBinding.homeBottomSheet.homeTabPager) { tab, postion -> {
+        /*TabLayoutMediator(viewBinding.homeBottomSheet.homeTabLayout, viewBinding.homeBottomSheet.homeTabPager) { tab, postion -> {
 
-        }}.attach()
+        }}.attach()*/
     }
 
     override fun onDestroyView() {

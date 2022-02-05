@@ -20,9 +20,9 @@ data class BusStop(
     @Json(name = "Description")
     var description: String,
     @Json(name = "Latitude")
-    var latitude: String,
+    var latitude: Double,
     @Json(name = "Longitude")
-    var longitude: String
+    var longitude: Double
 ) {
     @Backlink
     @Json(ignore = true)

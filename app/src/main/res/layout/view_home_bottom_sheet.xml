@@ -33,7 +33,7 @@
             style="@style/TextAppearance.Material3.HeadlineLarge"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.tabs.TabLayout
+    <!--com.google.android.material.tabs.TabLayout
         android:id="@+id/home_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,5 +66,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout-->
 </androidx.constraintlayout.widget.ConstraintLayout>

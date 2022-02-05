@@ -36,7 +36,7 @@ class SetupLocationFragment : Fragment(), ActivityResultCallback<Map<String, Boo
         @JvmStatic
         fun newInstance() = SetupLocationFragment().apply {}
     }
-    private val LOG_TAG = SetupLocationFragment::class.java.name
+    private val TAG = "SetupLocationFragment"
 
     private var _viewBinding: FragmentSetupLocationBinding? = null
     private val viewBinding get() = _viewBinding!!
@@ -72,18 +72,18 @@ class SetupLocationFragment : Fragment(), ActivityResultCallback<Map<String, Boo
             when {
                 permissionResults.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                     // Writes to location preference, location: allowed, precision: high
-                    Log.i(LOG_TAG, "User granted FINE_LOCATION permission")
+                    Log.i(TAG, "User granted FINE_LOCATION permission")
                     viewModel.updateLocationAccessPreference(true)
                     viewModel.updateLocationPrecisionPreference(true)
                 }
                 permissionResults.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                     // Writes to location preference, location: allowed, precision: low
-                    Log.i(LOG_TAG, "User granted COARSE_LOCATION permission")
+                    Log.i(TAG, "User granted COARSE_LOCATION permission")
                     viewModel.updateLocationAccessPreference(true)
                     viewModel.updateLocationPrecisionPreference(false)
                 } else -> {
                     // Writes to location preference, location: denied
-                    Log.i(LOG_TAG, "User denied location permission")
+                    Log.i(TAG, "User denied location permission")
                     viewModel.updateLocationAccessPreference(false)
                     viewModel.updateLocationPrecisionPreference(false)
                 }
@@ -99,7 +99,7 @@ class SetupLocationFragment : Fragment(), ActivityResultCallback<Map<String, Boo
                 onNextButtonClick(view)
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
-                Log.e(LOG_TAG, "Impossible situation happened: User denied permission and we are still in this page")
+                Log.e(TAG, "Impossible situation happened: User denied permission and we are still in this page")
             }
             else -> {
                 locationPermissionRequest.launch(AppConstants.LOCATION_PERMISSIONS)

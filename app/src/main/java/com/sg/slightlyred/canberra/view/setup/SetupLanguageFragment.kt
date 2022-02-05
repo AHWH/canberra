@@ -9,11 +9,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.sg.slightlyred.canberra.R
 import com.sg.slightlyred.canberra.databinding.FragmentSetupLanguageBinding
+import com.sg.slightlyred.canberra.utils.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -22,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SetupLanguageFragment : Fragment(), AdapterView.OnItemClickListener, View.OnClickListener {
-    private val TAG: String = SetupLocationFragment::class.java.name
+    private val TAG: String = "SetupLocationFragment"
 
     companion object {
         /**
@@ -40,15 +45,20 @@ class SetupLanguageFragment : Fragment(), AdapterView.OnItemClickListener, View.
     private val viewBinding get() = _viewBinding!!
     private val viewModel: SetupLanguageViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         _viewBinding = FragmentSetupLanguageBinding.inflate(layoutInflater, container, false)
 
-        viewModel.languagePreference.observe(viewLifecycleOwner) { onLanguagePreferenceUpdate(it) }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.languagePreference.collect {
+                    when (it) {
+                        is ResponseState.Success -> { onLanguagePreferenceUpdate(it.data!!) }
+                        else -> {}
+                    }
+                }
+            }
+        }
 
         // Setup language selector
         val languageListKey: Array<String> = resources.getStringArray(R.array.app_language_list_key)

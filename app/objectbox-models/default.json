@@ -225,12 +225,12 @@
         {
           "id": "5:5123349092859738507",
           "name": "latitude",
-          "type": 9
+          "type": 8
         },
         {
           "id": "6:7651224365854239380",
           "name": "longitude",
-          "type": 9
+          "type": 8
         }
       ],
       "relations": []

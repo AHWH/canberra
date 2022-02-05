@@ -11,7 +11,7 @@ import javax.inject.Inject
 class BusInfoRemoteSource @Inject constructor(
     private val busInfoService: BusInfoService
 ) : RemoteSource() {
-    private val TAG: String = BusInfoRemoteSource::class.java.name
+    private val TAG: String = "BusInfoRemoteSource"
 
     suspend fun getAllBusStops(): ResponseState<List<BusStop>> {
         // Current max is 5063
@@ -23,7 +23,7 @@ class BusInfoRemoteSource @Inject constructor(
 
         while (!isAllBusStopQueried) {
             val busStopQueryResponseState: ResponseState<LtaDataMallResponse<BusStop>> = getResult { busInfoService.getAllBusStops(skip) }
-            Log.i(TAG, "getAllBusStops :: Getting next $skip results")
+            Log.i(TAG, "getAllBusStops() :: Getting next $skip results")
 
             when (busStopQueryResponseState) {
                 is ResponseState.Success -> {
@@ -38,12 +38,12 @@ class BusInfoRemoteSource @Inject constructor(
                 }
                 is ResponseState.Error -> {
                     errorMessage = busStopQueryResponseState.message!!
-                    Log.e(TAG, "getAllBusStops :: Error received. $errorMessage")
+                    Log.e(TAG, "getAllBusStops() :: Error received. $errorMessage")
                     isAllBusStopQueried = true
                 }
                 else -> {
                     isAllBusStopQueried = true
-                    Log.e(TAG, "getAllBusStops :: Invalid NetworkResponse status received!")
+                    Log.e(TAG, "getAllBusStops() :: Invalid NetworkResponse status received!")
                 }
             }
         }
