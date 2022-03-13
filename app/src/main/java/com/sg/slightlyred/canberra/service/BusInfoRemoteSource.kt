@@ -3,6 +3,7 @@ package com.sg.slightlyred.canberra.service
 import android.util.Log
 import com.sg.slightlyred.canberra.constants.AppConstants
 import com.sg.slightlyred.canberra.data.model.LtaDataMallResponse
+import com.sg.slightlyred.canberra.data.model.bus.BusRoute
 import com.sg.slightlyred.canberra.data.model.bus.BusService
 import com.sg.slightlyred.canberra.data.model.bus.BusStop
 import com.sg.slightlyred.canberra.utils.ResponseState
@@ -88,5 +89,43 @@ class BusInfoRemoteSource @Inject constructor(
         }
 
         return if (errorMessage == null) ResponseState.Success(allBusServices) else ResponseState.Error(null, errorMessage)
+    }
+
+    suspend fun getAllBusRoutes(): ResponseState<List<BusRoute>> {
+        // Current max is ???
+        // Each response returns max 500 counts
+        var isAllBusRoutesQueried: Boolean = false;
+        var allBusRoutes: LinkedList<BusRoute> = LinkedList()
+        var errorMessage: String? = null
+        var skip: Long = 0
+
+        while (!isAllBusRoutesQueried) {
+            Log.i(TAG, "getAllBusRoutes() :: Getting next $skip results")
+            val busServiceQueryResponseState: ResponseState<LtaDataMallResponse<BusRoute>> = getResult { busInfoService.getAllBusRoutes(skip) }
+
+            when (busServiceQueryResponseState) {
+                is ResponseState.Success -> {
+                    val busRoutes: List<BusRoute> = busServiceQueryResponseState.data!!.values
+                    allBusRoutes.addAll(busRoutes)
+
+                    if (busRoutes.size < AppConstants.LTA_DATAMALL_MAX_VALUES_LENGTH) {
+                        isAllBusRoutesQueried = true
+                    } else {
+                        skip += AppConstants.LTA_DATAMALL_MAX_VALUES_LENGTH
+                    }
+                }
+                is ResponseState.Error -> {
+                    errorMessage = busServiceQueryResponseState.message!!
+                    Log.e(TAG, "getAllBusRoutes() :: Error Received. $errorMessage")
+                    isAllBusRoutesQueried = true
+                }
+                else -> {
+                    isAllBusRoutesQueried = true
+                    Log.e(TAG, "getAllBusRoutes() :: Invalid NetworkResponse status received!")
+                }
+            }
+        }
+
+        return if (errorMessage == null) ResponseState.Success(allBusRoutes) else ResponseState.Error(null, errorMessage)
     }
 }

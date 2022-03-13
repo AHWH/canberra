@@ -30,7 +30,7 @@ class BusServiceRepository @Inject constructor(
         null
     )
 
-    suspend fun getAllBusServiceRemoteAndSaveOnly(): Flow<ResponseState<Boolean>> = DataAccessStrategy.performGetRemoteAndSaveOnly(
+    suspend fun getAllBusServicesRemoteAndSaveOnly(): Flow<ResponseState<Boolean>> = DataAccessStrategy.performGetRemoteAndSaveOnly(
         { busInfoRemoteSource.getAllBusServices() },
         { busServiceDao.addWithStatus(it) }
     )

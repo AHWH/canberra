@@ -24,7 +24,7 @@ interface BusInfoService {
 
     @GET("ltaodataservice/BusRoutes")
     @Headers("AccountKey: " + BuildConfig.LTA_DATAMALL_TOKEN)
-    suspend fun getAllBusRoutes(@Query("%24skip") next: Long): Call<List<BusRoute>>
+    suspend fun getAllBusRoutes(@Query("%24skip") next: Long): Response<LtaDataMallResponse<BusRoute>>
 
     @GET("ltaodataservice/BusArrivalv2")
     @Headers("AccountKey: " + BuildConfig.LTA_DATAMALL_TOKEN)
