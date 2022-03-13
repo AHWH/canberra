@@ -6,6 +6,7 @@ import com.sg.slightlyred.canberra.data.model.bus.BusArrival
 import com.sg.slightlyred.canberra.data.model.bus.BusRoute
 import com.sg.slightlyred.canberra.data.model.bus.BusService
 import com.sg.slightlyred.canberra.data.model.bus.BusStop
+import com.sg.slightlyred.canberra.utils.ResponseState
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -19,7 +20,7 @@ interface BusInfoService {
 
     @GET("ltaodataservice/BusServices")
     @Headers("AccountKey: " + BuildConfig.LTA_DATAMALL_TOKEN)
-    suspend fun getAllBusServices(@Query("%24skip") next: Long): Call<List<BusService>>
+    suspend fun getAllBusServices(@Query("\$skip") next: Long): Response<LtaDataMallResponse<BusService>>
 
     @GET("ltaodataservice/BusRoutes")
     @Headers("AccountKey: " + BuildConfig.LTA_DATAMALL_TOKEN)

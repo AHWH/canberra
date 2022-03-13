@@ -30,7 +30,7 @@ class BusStopDao : ObjectBoxDaoImpl<BusStop>() {
         }, { result: Void?, throwable: Throwable? ->
             getObjectBox().store.runInTxAsync({
                 getObjectBox().put(t)
-            }, {result2, throwable2 -> Log.i("TAG", "Done")})
+            }, {result2, throwable2 -> Log.i(TAG, "add() :: Done")})
         })
     }
 
