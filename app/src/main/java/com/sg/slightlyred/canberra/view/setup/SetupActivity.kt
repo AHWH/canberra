@@ -16,7 +16,7 @@ class SetupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivitySetupBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-        viewModel.getAndSaveAllBusStopsOnly()
+        viewModel.getAndSaveAllBusInfoOnly()
     }
 
 }

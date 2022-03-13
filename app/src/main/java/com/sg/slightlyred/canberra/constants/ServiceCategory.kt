@@ -14,5 +14,6 @@ enum class ServiceCategory(val categoryName: String) {
     FLAT_FEE_190("Flat Fee, $1.90"),
     FLAT_FEE_350("Flat Fee, $3.50"),
     FLAT_FEE_380("Flat Fee, $3.80"),
-    UNKNOWN("Unknown")
+    CITY_LINK("City Link"),
+    UNKNOWN("Unknown");
 }
