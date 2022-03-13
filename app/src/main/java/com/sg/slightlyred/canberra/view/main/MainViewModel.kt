@@ -25,6 +25,9 @@ class MainViewModel @Inject constructor(private val busStopRepository: BusStopRe
     private val _allBusStops = MutableStateFlow<ResponseState<List<BusStop>>>(ResponseState.Loading())
     val allBusStop: StateFlow<ResponseState<List<BusStop>>> = _allBusStops
 
+    private val _nearbyBusStops = MutableStateFlow<ResponseState<List<BusStop>>>(ResponseState.Loading())
+    val nearbyBusStops: StateFlow<ResponseState<List<BusStop>>> = _nearbyBusStops
+
     fun updateLocation(location: Location) {
         _currentLocation.value = ResponseState.Success(location)
     }
@@ -36,5 +39,9 @@ class MainViewModel @Inject constructor(private val busStopRepository: BusStopRe
                 _allBusStops.value = it
             }
         }
+    }
+
+    fun updateNearbyBusStops(nearbyBusStops: List<BusStop>) {
+        _nearbyBusStops.value = ResponseState.Success(nearbyBusStops)
     }
 }

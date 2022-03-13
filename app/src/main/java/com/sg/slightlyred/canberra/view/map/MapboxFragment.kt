@@ -2,6 +2,7 @@ package com.sg.slightlyred.canberra.view.map
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -11,30 +12,43 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.observable.eventdata.CameraChangedEventData
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.delegates.listeners.OnCameraChangeListener
 import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.sg.slightlyred.canberra.R
 import com.sg.slightlyred.canberra.constants.AppConstants
 import com.sg.slightlyred.canberra.data.model.LocationResponse
+import com.sg.slightlyred.canberra.data.model.bus.BusStop
 import com.sg.slightlyred.canberra.databinding.FragmentMapboxBinding
+import com.sg.slightlyred.canberra.utils.CommonUtil
+import com.sg.slightlyred.canberra.utils.ResponseState
 import com.sg.slightlyred.canberra.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -64,9 +78,14 @@ class MapboxFragment : Fragment(), ActivityResultCallback<Map<String, Boolean>>,
 
     private lateinit var cameraOptionsBuilder: CameraOptions.Builder
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
+    private var busMarker: Bitmap? = null
     //View Variables (NOT CALL THEM and NULL THEM when view is destroyed)
+    private var _mapboxView: MapView? = null
+    private val mapboxView get() = _mapboxView!!
     private var _mapboxMap: MapboxMap? = null
     private val mapboxMap get() = _mapboxMap!!
+    private var _mapboxAnnotationManager: PointAnnotationManager? = null
+    private val mapboxAnnotationManager get() = _mapboxAnnotationManager!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,25 +93,40 @@ class MapboxFragment : Fragment(), ActivityResultCallback<Map<String, Boolean>>,
         cameraOptionsBuilder = CameraOptions.Builder()
         cameraOptionsBuilder.zoom(AppConstants.DEFAULT_ZOOM_VALUE)
         cameraOptionsBuilder.bearing(0.0)
+
+        busMarker = CommonUtil.convertDrawableToBitmap(AppCompatResources
+            .getDrawable(requireContext(), R.drawable.ic_baseline_location_on_red_24))
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _viewBinding = FragmentMapboxBinding.inflate(layoutInflater)
+        _mapboxView = viewBinding.mapboxMapView
         viewModel.getLocation().observe(viewLifecycleOwner) { onLocationDataChange(it) }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                parentViewModel.nearbyBusStops.collect {
+                    when (it) {
+                        is ResponseState.Success -> { placeNearbyBusStopsMarkers(it.data!!) }
+                        else -> {}
+                    }
+                }
+            }
+        }
 
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _mapboxMap = viewBinding.mapboxMapView.getMapboxMap()
+        _mapboxMap = mapboxView.getMapboxMap()
+        _mapboxAnnotationManager = mapboxView.annotations.createPointAnnotationManager()
 
         mapboxMap.loadStyleUri(Style.DARK) {
-            viewBinding.mapboxMapView.location.updateSettings {
+            mapboxView.location.updateSettings {
                 enabled = true
                 pulsingEnabled = true
             }
@@ -112,6 +146,8 @@ class MapboxFragment : Fragment(), ActivityResultCallback<Map<String, Boolean>>,
         super.onDestroyView()
         _viewBinding = null
         _mapboxMap = null
+        _mapboxView = null
+        _mapboxAnnotationManager = null
     }
 
 
@@ -189,6 +225,7 @@ class MapboxFragment : Fragment(), ActivityResultCallback<Map<String, Boolean>>,
         }
     }
 
+
     // MapBox related
     override fun onMapLoadError(eventData: MapLoadingErrorEventData) {
         //Log.e("HomeFragment", eventData.message)
@@ -207,5 +244,18 @@ class MapboxFragment : Fragment(), ActivityResultCallback<Map<String, Boolean>>,
         cameraOptionsBuilder.center(Point.fromLngLat(location.longitude, location.latitude))
         val cameraOptions:CameraOptions = cameraOptionsBuilder.build()
         mapboxMap.flyTo(cameraOptions)
+    }
+
+    private fun placeNearbyBusStopsMarkers(nearbyBusStops: List<BusStop>) {
+        mapboxAnnotationManager.deleteAll()
+        val nearbyBusStopAnnotations: MutableList<PointAnnotationOptions> = mutableListOf()
+        nearbyBusStops.forEach { nearbyBusStopAnnotations.add(createPointAnnotationOptions(it)) }
+        mapboxAnnotationManager.create(nearbyBusStopAnnotations)
+    }
+
+    private fun createPointAnnotationOptions(busStop: BusStop): PointAnnotationOptions {
+        return PointAnnotationOptions()
+            .withPoint(Point.fromLngLat(busStop.longitude, busStop.latitude))
+            .withIconImage(busMarker!!)
     }
 }

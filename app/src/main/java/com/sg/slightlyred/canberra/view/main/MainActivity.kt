@@ -21,6 +21,8 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val TAG: String = "MainActivity"
+
     private lateinit var viewBinding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
@@ -58,19 +60,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun collateNearestBusStops(currentLocation: Location?) {
-        Log.i("TEST", "location updated")
+        Log.d(TAG, "Updated location to " + currentLocation?.latitude + ", " + currentLocation?.longitude)
         val nearestBusStops: MutableList<BusStop> = mutableListOf();
         if (currentLocation != null && (allBusStops != null && allBusStops!!.isNotEmpty())) {
-            Log.i("TEST", "??")
             val boundingArea: BoundingArea = getBoundingArea(currentLocation)
             allBusStops!!.forEach {
                 if (withinAcceptableDistance(boundingArea, it)) {
                     nearestBusStops += it
                 }
             }
-            nearestBusStops.forEach {
-                Log.i("TEST", it.toString())
-            }
+            Log.d(TAG, "Number of nearby Bus Stops: "  + nearestBusStops.size)
+            viewModel.updateNearbyBusStops(nearestBusStops)
         }
     }
 
