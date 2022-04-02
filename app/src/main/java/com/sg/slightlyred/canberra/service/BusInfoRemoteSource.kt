@@ -16,7 +16,7 @@ class BusInfoRemoteSource @Inject constructor(
     private val TAG: String = "BusInfoRemoteSource"
 
     suspend fun getAllBusStops(): ResponseState<List<BusStop>> {
-        // Current max is 5063
+        // Current max is 5073
         // Each response respond 500 count
         var isAllBusStopQueried: Boolean = false
         val allBusStops: LinkedList<BusStop> = LinkedList()
@@ -54,7 +54,7 @@ class BusInfoRemoteSource @Inject constructor(
     }
 
     suspend fun getAllBusServices(): ResponseState<List<BusService>> {
-        // Current max is ???
+        // Current max is 724
         // Each response returns max 500 counts
         var isAllBusServicesQueried: Boolean = false;
         var allBusServices: LinkedList<BusService> = LinkedList()
@@ -92,7 +92,7 @@ class BusInfoRemoteSource @Inject constructor(
     }
 
     suspend fun getAllBusRoutes(): ResponseState<List<BusRoute>> {
-        // Current max is ???
+        // Current max is 26123
         // Each response returns max 500 counts
         var isAllBusRoutesQueried: Boolean = false;
         var allBusRoutes: LinkedList<BusRoute> = LinkedList()
@@ -101,11 +101,11 @@ class BusInfoRemoteSource @Inject constructor(
 
         while (!isAllBusRoutesQueried) {
             Log.i(TAG, "getAllBusRoutes() :: Getting next $skip results")
-            val busServiceQueryResponseState: ResponseState<LtaDataMallResponse<BusRoute>> = getResult { busInfoService.getAllBusRoutes(skip) }
+            val busRouteQueryResponseState: ResponseState<LtaDataMallResponse<BusRoute>> = getResult { busInfoService.getAllBusRoutes(skip) }
 
-            when (busServiceQueryResponseState) {
+            when (busRouteQueryResponseState) {
                 is ResponseState.Success -> {
-                    val busRoutes: List<BusRoute> = busServiceQueryResponseState.data!!.values
+                    val busRoutes: List<BusRoute> = busRouteQueryResponseState.data!!.values
                     allBusRoutes.addAll(busRoutes)
 
                     if (busRoutes.size < AppConstants.LTA_DATAMALL_MAX_VALUES_LENGTH) {
@@ -115,7 +115,7 @@ class BusInfoRemoteSource @Inject constructor(
                     }
                 }
                 is ResponseState.Error -> {
-                    errorMessage = busServiceQueryResponseState.message!!
+                    errorMessage = busRouteQueryResponseState.message!!
                     Log.e(TAG, "getAllBusRoutes() :: Error Received. $errorMessage")
                     isAllBusRoutesQueried = true
                 }
