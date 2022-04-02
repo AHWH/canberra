@@ -8,11 +8,7 @@ class ServiceCategoryConverter : PropertyConverter<ServiceCategory?, String?> {
         if (databaseValue == null) {
             return null
         }
-        return try {
-            ServiceCategory.valueOf(databaseValue)
-        } catch (ex: IllegalArgumentException) {
-            ServiceCategory.UNKNOWN
-        }
+        return ServiceCategory.getServiceCategory(databaseValue)
     }
 
     override fun convertToDatabaseValue(entityProperty: ServiceCategory?): String? {
