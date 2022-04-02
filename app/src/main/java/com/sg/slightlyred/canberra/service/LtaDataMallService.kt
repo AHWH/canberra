@@ -1,6 +1,8 @@
 package com.sg.slightlyred.canberra.service
 
+import com.sg.slightlyred.canberra.constants.ServiceCategory
 import com.sg.slightlyred.canberra.service.adapter.LocalTimeAdapter
+import com.sg.slightlyred.canberra.service.adapter.ServiceCategoryAdapter
 import com.sg.slightlyred.canberra.service.adapter.ZonedDateTimeAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -23,6 +25,7 @@ interface LtaDataMallService {
                 val moshi: Moshi = Moshi.Builder()
                     .add(LocalTimeAdapter())
                     .add(ZonedDateTimeAdapter())
+                    .add(ServiceCategoryAdapter())
                     .addLast(KotlinJsonAdapterFactory())
                     .build()
 
