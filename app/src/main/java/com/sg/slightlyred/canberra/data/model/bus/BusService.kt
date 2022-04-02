@@ -17,12 +17,12 @@ data class BusService(
     @Json(ignore = true)
     var id: Long = 0,
     @Index
-    @Unique
     @Json(name = "ServiceNo")
     var serviceNo: String = "",
     @Convert(converter = ServiceOperatorConverter::class, dbType = String::class)
     @Json(name = "Operator")
     var operator: ServiceOperator? = null,
+    @Index
     @Json(name = "Direction")
     var direction: Int = 0,
     @Convert(converter = ServiceCategoryConverter::class, dbType = String::class)

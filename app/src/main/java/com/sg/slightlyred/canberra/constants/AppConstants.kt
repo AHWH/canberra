@@ -1,6 +1,7 @@
 package com.sg.slightlyred.canberra.constants
 
 import android.Manifest
+import java.time.format.DateTimeFormatter
 
 object AppConstants {
     @JvmStatic
@@ -18,6 +19,10 @@ object AppConstants {
 
     @JvmStatic
     val LTA_DATAMALL_MAX_VALUES_LENGTH = 500
+    @JvmStatic
+    val LTA_DATAMALL_NOT_APPLICABLE_DASH = "-"
+    @JvmStatic
+    val LTA_DATAMALL_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HHmm");
 
     @JvmStatic
     val APP_MAP_CAMERA_CENTER: String = "APP_MAP_CAMERA_CENTER"
