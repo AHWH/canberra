@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
+import com.sg.slightlyred.canberra.adapter.HomeTabViewPagerAdapter
 import com.sg.slightlyred.canberra.data.model.bus.BusStop
 import com.sg.slightlyred.canberra.databinding.FragmentHomeBinding
 import com.sg.slightlyred.canberra.utils.ResponseState
@@ -36,6 +37,9 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
 
+    private var _viewPagerAdapter: HomeTabViewPagerAdapter? = null
+    private val viewPagerAdapter get() = _viewPagerAdapter!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -50,27 +54,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*TabLayoutMediator(viewBinding.homeBottomSheet.homeTabLayout, viewBinding.homeBottomSheet.homeTabPager) { tab, postion -> {
-
-        }}.attach()*/
+        _viewPagerAdapter = HomeTabViewPagerAdapter(childFragmentManager, lifecycle)
+        viewBinding.homeBottomSheet.homeTabPager.adapter = viewPagerAdapter
+        TabLayoutMediator(viewBinding.homeBottomSheet.homeTabLayout, viewBinding.homeBottomSheet.homeTabPager) { tab, postion -> {
+            //TODO: Do something
+        }}.attach()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _viewBinding = null
-    }
-
-    //Test
-    private fun onBusStops(responseState: ResponseState<List<BusStop>>) {
-        if (responseState.status == ResponseState.Status.SUCCESS) {
-            Log.i(LOG_TAG, "Successfully retrieved " + responseState.data?.size + " records of Bus Stops")
-            if (responseState.data?.size != 0) {
-                Log.i(LOG_TAG, "Example: " + responseState.data?.get(0))
-            }
-        } else if (responseState.status == ResponseState.Status.LOADING) {
-            Log.i(LOG_TAG, "Loading");
-        } else {
-            Log.e(LOG_TAG, "Error!")
-        }
     }
 }
